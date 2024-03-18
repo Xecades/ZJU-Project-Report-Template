@@ -5,6 +5,8 @@
 #let state_author = state("author", none)
 #let state_school_id = state("school_id", none)
 #let state_date = state("date", none)
+#let state_major = state("major", none)
+#let state_teacher = state("teacher", none)
 #let state_theme = state("theme", none)
 #let state_block_theme = state("block_theme", none)
 
@@ -40,11 +42,12 @@
   cover_image_size: none,
   semester: "<semester>",
   author: none,
-  school_id: none,
-  date: none,
   college: none,
-  teacher: none,
+  department: none,
   major: none,
+  school_id: none,
+  teacher: none,
+  date: none,
   cover_comments: none,
   cover_comments_size: 1.25em,
   language: none,
@@ -95,6 +98,8 @@
   state_author.update(author)
   state_school_id.update(school_id)
   state_date.update(date)
+  state_major.update(major)
+  state_teacher.update(teacher)
   state_theme.update(theme)
   state_block_theme.update(block_theme)
 
@@ -102,8 +107,9 @@
   if (theme == "lab") {
     v(1fr)
     align(center, image("./images/ZJU-Banner.png", width: cover_image_size))
+    v(2em)
     align(center)[
-      #set text(size: 26pt)
+      #set text(size: 20pt)
       #fakebold[本科实验报告]
     ]
     v(2fr)
@@ -124,14 +130,20 @@
         },
         [课程名称], course,
         [姓　　名], author,
-        [学　　号], school_id,
         [学　　院], college,
+        [　　　系], department,
         [专　　业], major,
+        [学　　号], school_id,
         [指导教师], teacher,
-        [报告日期], date,
       )
     ])
-    v(2fr)
+    v(.8fr)
+    align(center)[
+      #set text(size: 1.2em)
+      #v(1em)
+      #date
+    ]
+    v(1fr)
     pagebreak()
   } else if (theme == "project") {
     v(1fr)
@@ -262,8 +274,11 @@
   course: none,
   type: "综合",
   name: "<name>",
+  major: none,
+  coworker: "<coworker>",
   author: none,
   school_id: none,
+  teacher: none,
   place: "<place>",
   date: none,
 ) = {
@@ -272,55 +287,29 @@
     #set text(size: 1.5em)
     #fakebold[浙江大学实验报告]
   ]
+
+  let val = (span, content, color: black) => colspanx(span, _underlined_cell(content, color: color))
+  let key = val.with(color: white)
+  let either = (a, b) => {if a == none {b.display()} else {a}}
+
   tablex(
-    columns: (1fr, 0.32fr, 1.68fr, 1fr, 1fr, 1fr),
+    columns: (1fr,) * 18,
     align: center + horizon,
     stroke: 0pt,
     inset: 1pt,
-    _underlined_cell("课程名称：", color: white),
-    colspanx(2, _underlined_cell(
-      if course == none {
-        state_course.display()
-      } else {
-        course
-      }
-    )), (),
-    _underlined_cell("实验类型：", color: white),
-    colspanx(2, _underlined_cell(
-      type
-    )), (),
-    colspanx(2, _underlined_cell("实验项目名称：", color: white)), (),
-    colspanx(4, _underlined_cell(
-      name
-    )), (), (), (),
-    _underlined_cell("学生姓名：", color: white),
-    colspanx(2, _underlined_cell(
-      if author == none {
-        state_author.display()
-      } else {
-        author
-      }
-    )), (),
-    _underlined_cell("学号：", color: white),
-    colspanx(2, _underlined_cell(
-      if school_id == none {
-        state_school_id.display()
-      } else {
-        school_id
-      }
-    )), (),
-    _underlined_cell("实验地点：", color: white),
-    colspanx(2, _underlined_cell(
-      place
-    )), (),
-    _underlined_cell("实验日期：", color: white),
-    colspanx(2, _underlined_cell(
-      if date == none {
-        state_date.display()
-      } else {
-        date
-      }
-    )), (),
+
+    // ..((val(1, "A"), val(1, "B", color: red)) * 9),
+
+    key(3, "课程名称："), val(9, either(course, state_course)),
+    key(3, "实验类型："), val(3, type),
+    key(4, "实验项目名称："), val(14, name),
+    key(3, "学生姓名："), val(3, either(author, state_author)),
+    key(2, "专业："), val(5, either(major, state_major)),
+    key(2, "学号："), val(3, either(school_id, state_school_id)),
+    key(4, "同组学生姓名："), val(5, coworker),
+    key(3, "指导老师："), val(6, either(teacher, state_teacher)),
+    key(3, "实验地点："), val(6, place),
+    key(3, "实验日期："), val(6, either(date, state_date)),
   )
 }
 

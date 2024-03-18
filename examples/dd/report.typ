@@ -6,14 +6,20 @@
   title: "数字逻辑设计 实验报告",
   semester: "2023-2024 Spring & Summer",
   author: "某学生",
-  school_id: "1234567890",
-  date: "20xx年xx月xx日",
   college: "计算机科学与技术学院",
+  department: "计算机系",
   major: "计算机科学与技术",
+  school_id: "1234567890",
   teacher: "某老师",
+  date: "20xx年xx月xx日",
 )
 
-#lab_header(name: "Lab1: 第一次实验", place: "紫金港 东x-xxx", date: "20xx年xx月xx日")
+#lab_header(
+  name: "Lab1: 第一次实验",
+  coworker: "某学生",
+  place: "紫金港 东x-xxx",
+  date: "20xx年xx月xx日",
+)
 
 = 实验一：Verilog 入门
 
